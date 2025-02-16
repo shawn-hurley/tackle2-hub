@@ -12,15 +12,15 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jortel/go-utils v0.1.1
 	github.com/konveyor/tackle2-seed v0.0.0-20230731150314-953199a73e93
-	github.com/mattn/go-sqlite3 v1.14.17
+	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/onsi/gomega v1.27.6
 	github.com/prometheus/client_golang v1.15.0
 	github.com/swaggo/swag v1.16.1
 	golang.org/x/sys v0.7.0
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/datatypes v1.2.0
-	gorm.io/driver/sqlite v1.5.2
-	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
+	gorm.io/driver/sqlite v1.5.7
+	gorm.io/gorm v1.25.7-0.20240204074919-46816ad31dde
 	k8s.io/api v0.25.0
 	k8s.io/apimachinery v0.25.0
 	k8s.io/apiserver v0.25.0
