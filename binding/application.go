@@ -6,26 +6,23 @@ import (
 	mime "github.com/gin-gonic/gin/binding"
 	liberr "github.com/jortel/go-utils/error"
 	"github.com/konveyor/tackle2-hub/api"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"
 	"strconv"
 )
 
-//
 // Application API.
 type Application struct {
 	client *Client
 }
 
-//
 // Create an Application.
 func (h *Application) Create(r *api.Application) (err error) {
 	err = h.client.Post(api.ApplicationsRoot, &r)
 	return
 }
 
-//
 // Get an Application by ID.
 func (h *Application) Get(id uint) (r *api.Application, err error) {
 	r = &api.Application{}
@@ -34,7 +31,6 @@ func (h *Application) Get(id uint) (r *api.Application, err error) {
 	return
 }
 
-//
 // List Applications.
 func (h *Application) List() (list []api.Application, err error) {
 	list = []api.Application{}
@@ -42,7 +38,6 @@ func (h *Application) List() (list []api.Application, err error) {
 	return
 }
 
-//
 // Update an Application.
 func (h *Application) Update(r *api.Application) (err error) {
 	path := Path(api.ApplicationRoot).Inject(Params{api.ID: r.ID})
@@ -50,14 +45,12 @@ func (h *Application) Update(r *api.Application) (err error) {
 	return
 }
 
-//
 // Delete an Application.
 func (h *Application) Delete(id uint) (err error) {
 	err = h.client.Delete(Path(api.ApplicationRoot).Inject(Params{api.ID: id}))
 	return
 }
 
-//
 // Bucket returns the bucket API.
 func (h *Application) Bucket(id uint) (b *BucketContent) {
 	params := Params{
@@ -72,7 +65,6 @@ func (h *Application) Bucket(id uint) (b *BucketContent) {
 	return
 }
 
-//
 // FindIdentity by kind.
 func (h *Application) FindIdentity(id uint, kind string) (r *api.Identity, found bool, err error) {
 	list := []api.Identity{}
@@ -101,7 +93,6 @@ func (h *Application) FindIdentity(id uint, kind string) (r *api.Identity, found
 	return
 }
 
-//
 // Tags returns the tags API.
 func (h *Application) Tags(id uint) (tg AppTags) {
 	tg = AppTags{
@@ -111,7 +102,6 @@ func (h *Application) Tags(id uint) (tg AppTags) {
 	return
 }
 
-//
 // AppTags sub-resource API.
 // Provides association management of tags to applications by name.
 type AppTags struct {
@@ -120,13 +110,11 @@ type AppTags struct {
 	source *string
 }
 
-//
 // Source sets the source for other operations on the associated tags.
 func (h *AppTags) Source(name string) {
 	h.source = &name
 }
 
-//
 // Replace the associated tags for the source with a new set.
 // Returns an error if the source is not set.
 func (h *AppTags) Replace(ids []uint) (err error) {
@@ -152,7 +140,6 @@ func (h *AppTags) Replace(ids []uint) (err error) {
 	return
 }
 
-//
 // List associated tags.
 // Returns a list of tag names.
 func (h *AppTags) List() (list []api.TagRef, err error) {
@@ -171,7 +158,6 @@ func (h *AppTags) List() (list []api.TagRef, err error) {
 	return
 }
 
-//
 // Add associates a tag with the application.
 func (h *AppTags) Add(id uint) (err error) {
 	path := Path(api.ApplicationTagsRoot).Inject(Params{api.ID: h.appId})
@@ -183,7 +169,6 @@ func (h *AppTags) Add(id uint) (err error) {
 	return
 }
 
-//
 // Ensure ensures tag is associated with the application.
 func (h *AppTags) Ensure(id uint) (err error) {
 	err = h.Add(id)
@@ -193,7 +178,6 @@ func (h *AppTags) Ensure(id uint) (err error) {
 	return
 }
 
-//
 // Delete ensures the tag is not associated with the application.
 func (h *AppTags) Delete(id uint) (err error) {
 	path := Path(
@@ -209,7 +193,6 @@ func (h *AppTags) Delete(id uint) (err error) {
 	return
 }
 
-//
 // unique ensures unique ids.
 func (h *AppTags) unique(ids []uint) (u []uint) {
 	mp := map[uint]int{}
@@ -222,7 +205,6 @@ func (h *AppTags) unique(ids []uint) (u []uint) {
 	return
 }
 
-//
 // Facts returns the tags API.
 func (h *Application) Facts(id uint) (f AppFacts) {
 	f = AppFacts{
@@ -232,7 +214,6 @@ func (h *Application) Facts(id uint) (f AppFacts) {
 	return
 }
 
-//
 // AppFacts sub-resource API.
 // Provides association management of facts.
 type AppFacts struct {
@@ -241,13 +222,11 @@ type AppFacts struct {
 	source string
 }
 
-//
 // Source sets the source for other operations on the facts.
 func (h *AppFacts) Source(source string) {
 	h.source = source
 }
 
-//
 // List facts.
 func (h *AppFacts) List() (facts api.FactMap, err error) {
 	facts = api.FactMap{}
@@ -258,7 +237,6 @@ func (h *AppFacts) List() (facts api.FactMap, err error) {
 	return
 }
 
-//
 // Get a fact.
 func (h *AppFacts) Get(name string, value interface{}) (err error) {
 	key := api.FactKey(name)
@@ -272,7 +250,6 @@ func (h *AppFacts) Get(name string, value interface{}) (err error) {
 	return
 }
 
-//
 // Set a fact (created as needed).
 func (h *AppFacts) Set(name string, value interface{}) (err error) {
 	key := api.FactKey(name)
@@ -286,7 +263,6 @@ func (h *AppFacts) Set(name string, value interface{}) (err error) {
 	return
 }
 
-//
 // Delete a fact.
 func (h *AppFacts) Delete(name string) (err error) {
 	key := api.FactKey(name)
@@ -300,7 +276,6 @@ func (h *AppFacts) Delete(name string) (err error) {
 	return
 }
 
-//
 // Replace facts.
 func (h *AppFacts) Replace(facts api.FactMap) (err error) {
 	key := api.FactKey("")
@@ -319,14 +294,12 @@ func (h *Application) Analysis(id uint) (a Analysis) {
 	return
 }
 
-//
 // Analysis API.
 type Analysis struct {
 	client *Client
 	appId  uint
 }
 
-//
 // Create an analysis report.
 func (h *Analysis) Create(r *api.Analysis, encoding string, issues, deps io.Reader) (err error) {
 	path := Path(api.AppAnalysesRoot).Inject(Params{api.ID: h.appId})

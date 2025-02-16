@@ -12,7 +12,7 @@ import (
 	"github.com/konveyor/tackle2-hub/api/sort"
 	"github.com/konveyor/tackle2-hub/auth"
 	"github.com/konveyor/tackle2-hub/model"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"io"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -28,11 +28,9 @@ const (
 	MaxCount = 50000
 )
 
-//
 // BaseHandler base handler.
 type BaseHandler struct{}
 
-//
 // DB return db client associated with the context.
 func (h *BaseHandler) DB(ctx *gin.Context) (db *gorm.DB) {
 	rtx := WithContext(ctx)
@@ -40,7 +38,6 @@ func (h *BaseHandler) DB(ctx *gin.Context) (db *gorm.DB) {
 	return
 }
 
-//
 // Client returns k8s client from the context.
 func (h *BaseHandler) Client(ctx *gin.Context) (client client.Client) {
 	rtx := WithContext(ctx)
@@ -48,7 +45,6 @@ func (h *BaseHandler) Client(ctx *gin.Context) (client client.Client) {
 	return
 }
 
-//
 // WithCount report count.
 // Sets the X-Total header for pagination.
 // Returns an error when count exceeds the limited and
@@ -76,7 +72,6 @@ func (h *BaseHandler) WithCount(ctx *gin.Context, count int64) (err error) {
 	return
 }
 
-//
 // preLoad update DB to pre-load fields.
 func (h *BaseHandler) preLoad(db *gorm.DB, fields ...string) (tx *gorm.DB) {
 	tx = db
@@ -87,14 +82,12 @@ func (h *BaseHandler) preLoad(db *gorm.DB, fields ...string) (tx *gorm.DB) {
 	return
 }
 
-//
 // fields builds a map of fields.
 func (h *BaseHandler) fields(m interface{}) (mp map[string]interface{}) {
 	mp = reflect.Fields(m)
 	return
 }
 
-//
 // pk returns the PK (ID) parameter.
 func (h *BaseHandler) pk(ctx *gin.Context) (id uint) {
 	s := ctx.Param(ID)
@@ -103,11 +96,10 @@ func (h *BaseHandler) pk(ctx *gin.Context) (id uint) {
 	return
 }
 
-//
 // modBody updates the body using the `mod` function.
-//   1. read the body.
-//   2. mod()
-//   3. write body.
+//  1. read the body.
+//  2. mod()
+//  3. write body.
 func (h *BaseHandler) modBody(
 	ctx *gin.Context,
 	r interface{},
@@ -131,7 +123,6 @@ func (h *BaseHandler) modBody(
 	return
 }
 
-//
 // CurrentUser gets username from Keycloak auth token.
 func (h *BaseHandler) CurrentUser(ctx *gin.Context) (user string) {
 	rtx := WithContext(ctx)
@@ -143,7 +134,6 @@ func (h *BaseHandler) CurrentUser(ctx *gin.Context) (user string) {
 	return
 }
 
-//
 // HasScope determines if the token has the specified scope.
 func (h *BaseHandler) HasScope(ctx *gin.Context, scope string) (b bool) {
 	in := auth.BaseScope{}
@@ -158,7 +148,6 @@ func (h *BaseHandler) HasScope(ctx *gin.Context, scope string) (b bool) {
 	return
 }
 
-//
 // Bind based on Content-Type header.
 // Opinionated towards json.
 func (h *BaseHandler) Bind(ctx *gin.Context, r interface{}) (err error) {
@@ -178,7 +167,6 @@ func (h *BaseHandler) Bind(ctx *gin.Context, r interface{}) (err error) {
 	return
 }
 
-//
 // Decoder returns a decoder based on encoding.
 // Opinionated towards json.
 func (h *BaseHandler) Decoder(ctx *gin.Context, encoding string, r io.Reader) (d Decoder, err error) {
@@ -202,21 +190,18 @@ func (h *BaseHandler) Decoder(ctx *gin.Context, encoding string, r io.Reader) (d
 	return
 }
 
-//
 // Status sets the status code.
 func (h *BaseHandler) Status(ctx *gin.Context, code int) {
 	rtx := WithContext(ctx)
 	rtx.Status(code)
 }
 
-//
 // Respond sets the response.
 func (h *BaseHandler) Respond(ctx *gin.Context, code int, r interface{}) {
 	rtx := WithContext(ctx)
 	rtx.Respond(code, r)
 }
 
-//
 // Accepted determines if the mime is accepted.
 // Wildcards ignored.
 func (h *BaseHandler) Accepted(ctx *gin.Context, mimes ...string) (b bool) {
@@ -234,7 +219,6 @@ func (h *BaseHandler) Accepted(ctx *gin.Context, mimes ...string) (b bool) {
 	return
 }
 
-//
 // Attachment sets the Content-Disposition header.
 func (h *BaseHandler) Attachment(ctx *gin.Context, name string) {
 	attachment := fmt.Sprintf("attachment; filename=\"%s\"", name)
@@ -243,7 +227,6 @@ func (h *BaseHandler) Attachment(ctx *gin.Context, name string) {
 		attachment)
 }
 
-//
 // REST resource.
 type Resource struct {
 	ID         uint      `json:"id,omitempty" yaml:",omitempty"`
@@ -252,7 +235,6 @@ type Resource struct {
 	CreateTime time.Time `json:"createTime" yaml:",omitempty"`
 }
 
-//
 // With updates the resource with the model.
 func (r *Resource) With(m *model.Model) {
 	r.ID = m.ID
@@ -261,7 +243,6 @@ func (r *Resource) With(m *model.Model) {
 	r.CreateTime = m.CreateTime
 }
 
-//
 // ref with id and named model.
 func (r *Resource) ref(id uint, m interface{}) (ref Ref) {
 	ref.ID = id
@@ -269,7 +250,6 @@ func (r *Resource) ref(id uint, m interface{}) (ref Ref) {
 	return
 }
 
-//
 // refPtr with id and named model.
 func (r *Resource) refPtr(id *uint, m interface{}) (ref *Ref) {
 	if id == nil {
@@ -281,7 +261,6 @@ func (r *Resource) refPtr(id *uint, m interface{}) (ref *Ref) {
 	return
 }
 
-//
 // idPtr extracts ref ID.
 func (r *Resource) idPtr(ref *Ref) (id *uint) {
 	if ref != nil {
@@ -290,14 +269,12 @@ func (r *Resource) idPtr(ref *Ref) (id *uint) {
 	return
 }
 
-//
 // nameOf model.
 func (r *Resource) nameOf(m interface{}) (name string) {
 	name = reflect.NameOf(m)
 	return
 }
 
-//
 // Ref represents a FK.
 // Contains the PK and (name) natural key.
 // The name is optional and read-only.
@@ -306,14 +283,12 @@ type Ref struct {
 	Name string `json:"name,omitempty"`
 }
 
-//
 // With id and named model.
 func (r *Ref) With(id uint, name string) {
 	r.ID = id
 	r.Name = name
 }
 
-//
 // TagRef represents a reference to a Tag.
 // Contains the tag ID, name, tag source.
 type TagRef struct {
@@ -322,7 +297,6 @@ type TagRef struct {
 	Source string `json:"source"`
 }
 
-//
 // With id and named model.
 func (r *TagRef) With(id uint, name string, source string) {
 	r.ID = id
@@ -330,14 +304,12 @@ func (r *TagRef) With(id uint, name string, source string) {
 	r.Source = source
 }
 
-//
 // Page provides pagination.
 type Page struct {
 	Offset int
 	Limit  int
 }
 
-//
 // With context.
 func (p *Page) With(ctx *gin.Context) {
 	s := ctx.Query("offset")
@@ -351,7 +323,6 @@ func (p *Page) With(ctx *gin.Context) {
 	return
 }
 
-//
 // Paginated returns a paginated DB.
 func (p *Page) Paginated(in *gorm.DB) (out *gorm.DB) {
 	out = in
@@ -364,17 +335,14 @@ func (p *Page) Paginated(in *gorm.DB) (out *gorm.DB) {
 	return
 }
 
-//
 // Sort provides sorting.
 type Sort = sort.Sort
 
-//
 // Decoder binding decoder.
 type Decoder interface {
 	Decode(r interface{}) (err error)
 }
 
-//
 // Cursor Paginated rows iterator.
 type Cursor struct {
 	Page
@@ -384,7 +352,6 @@ type Cursor struct {
 	Error error
 }
 
-//
 // Next returns true when has next row.
 func (r *Cursor) Next(m interface{}) (next bool) {
 	if r.Error != nil {
@@ -412,7 +379,6 @@ func (r *Cursor) Next(m interface{}) (next bool) {
 	return
 }
 
-//
 // With configures the cursor.
 func (r *Cursor) With(db *gorm.DB, p Page) {
 	r.DB = db.Offset(p.Offset)
@@ -421,14 +387,12 @@ func (r *Cursor) With(db *gorm.DB, p Page) {
 	r.Page = p
 }
 
-//
 // Count returns the count adjusted for offset.
 func (r *Cursor) Count() (n int64) {
 	n = int64(r.Offset) + r.Index
 	return n
 }
 
-//
 // Close the cursor.
 func (r *Cursor) Close() {
 	if r.Rows != nil {
@@ -436,7 +400,6 @@ func (r *Cursor) Close() {
 	}
 }
 
-//
 // pageLimited returns true when page Limit defined and exceeded.
 func (r *Cursor) pageLimited() (b bool) {
 	if r.Limit < 1 {
