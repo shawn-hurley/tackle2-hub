@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-playground/validator/v10 v10.13.0
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/google/uuid v1.3.0
 	github.com/jortel/go-utils v0.1.1
 	github.com/konveyor/tackle2-seed v0.0.0-20230731150314-953199a73e93
