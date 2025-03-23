@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-playground/validator/v10 v10.13.0
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.3.0
 	github.com/jortel/go-utils v0.1.1
 	github.com/konveyor/tackle2-seed v0.0.0-20230731150314-953199a73e93
@@ -50,6 +50,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic v0.5.7-v3refs // indirect
