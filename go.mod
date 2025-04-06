@@ -1,6 +1,8 @@
 module github.com/konveyor/tackle2-hub
 
-go 1.18
+go 1.23.0
+
+toolchain go1.23.8
 
 require (
 	github.com/Nerzal/gocloak/v10 v10.0.1
@@ -83,7 +85,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.9 // indirect
 	go.uber.org/zap v1.24.0 // indirect
-	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
+	golang.org/x/arch v0.16.0 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
