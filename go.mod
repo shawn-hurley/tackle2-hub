@@ -1,6 +1,8 @@
 module github.com/konveyor/tackle2-hub
 
-go 1.18
+go 1.23.0
+
+toolchain go1.23.8
 
 require (
 	github.com/Nerzal/gocloak/v10 v10.0.1
@@ -16,7 +18,7 @@ require (
 	github.com/onsi/gomega v1.27.6
 	github.com/prometheus/client_golang v1.15.0
 	github.com/swaggo/swag v1.16.1
-	golang.org/x/sys v0.7.0
+	golang.org/x/sys v0.32.0
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/datatypes v1.2.0
 	gorm.io/driver/sqlite v1.5.2
